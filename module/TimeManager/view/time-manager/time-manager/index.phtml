@@ -1,3 +1,25 @@
-<?php
 
+
+<a href="#add" id="startTask">Start</a>
+<label for="note">Note</label>
+<textarea id="note" ></textarea>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#startTask').click(function(){
+            var note = $("#note").val();
+            $.ajax({
+                type: 'POST',
+                data: {note: note},
+                url: 'timemanager/save',
+                success: function(){
+                    alert('dodano!');
+                }
+            });
+        });
+    });
+</script>
+
+<?php
 var_dump($tasks);
+?>

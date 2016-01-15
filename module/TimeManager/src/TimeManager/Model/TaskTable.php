@@ -16,7 +16,7 @@ class TaskTable extends  AbstractTableGateway{
 
     public function fetchAll(){
         $resultSet = $this->select(function (Select $select) {
-            $select->order('id ASC');
+            $select->order('id DESC');
         });
         $entities = array();
         foreach ($resultSet as $row) {
