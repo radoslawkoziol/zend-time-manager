@@ -29,4 +29,45 @@ class TaskTable extends  AbstractTableGateway{
         }
         return $entities;
     }
+
+    public function getTask($id){
+        $row = $this->select(array('id' => (int) $id))->current();
+        if(!$row) return false;
+
+        $task = new Entity\Task(
+          array(
+              'id' => $row->id,
+              'start' => $row->start,
+              'end' => $row->end,
+              'note' => $row->note
+          )
+        );
+
+        return $task;
+    }
+
+    public function saveTask(Entity\Task $task){
+        $data = array(
+            'note' => $task->getNote(),
+            'start' => $task->getStart(),
+            'end' => $task->getEnd()
+        );
+
+        $id = (int) $task->getId();
+
+        if($id == 0){
+            $data['start'] = date("Y-m-d H:i:s");
+            if(!$this->insert($data)) return false;
+
+            return $this->getLastInsertValue();
+
+        }elseif($this->getTask($id)){
+            if(!$this->update($data, array('id' => $id))) return false;
+
+            return $id;
+
+        }else{
+            return false;
+        }
+    }
 }
