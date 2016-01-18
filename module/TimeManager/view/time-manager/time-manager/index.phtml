@@ -1,8 +1,11 @@
+<div id="runner"></div>
 <textarea id="note" placeholder="Note" ></textarea>
 <a href="" class="button start" id="startTask">Start</a>
 
 <script type="text/javascript">
     $(document).ready(function(){
+        var runner = $('#runner');
+        runner.runner();
         var working = false;
         $('#startTask').click(function(event){
             event.preventDefault();
@@ -19,6 +22,8 @@
                         $(button).addClass('working');
                         $(button).text('Stop');
                         working = true;
+                        runner.runner('reset');
+                        runner.runner('start');
                     }
                 });
             }else{
@@ -31,6 +36,7 @@
                         $(button).removeClass('working');
                         $(button).text('Start');
                         working = false;
+                        runner.runner('stop');
                     }
                 });
             }
