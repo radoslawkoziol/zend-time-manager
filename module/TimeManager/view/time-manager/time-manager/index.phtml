@@ -1,24 +1,45 @@
-
-
-<a href="#add" id="startTask">Start</a>
-<label for="note">Note</label>
-<textarea id="note" ></textarea>
+<textarea id="note" placeholder="Note" ></textarea>
+<a href="" class="button start" id="startTask">Start</a>
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#startTask').click(function(){
+        var working = false;
+        $('#startTask').click(function(event){
+            event.preventDefault();
             var note = $("#note").val();
-            $.ajax({
-                type: 'POST',
-                data: {note: note},
-                url: 'timemanager/save',
-                success: function(){
-                    alert('dodano!');
-                }
-            });
+            var button = this;
+            if(!working){
+                $.ajax({
+                    type: 'POST',
+                    data: {note: note},
+                    url: 'timemanager/start',
+                    success: function(data){
+                        var r = $.parseJSON(data);
+                        console.log("starting task " + r.response);
+                        $(button).addClass('working');
+                        $(button).text('Stop');
+                        working = true;
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: 'POST',
+                    url: 'timemanager/stop',
+                    success: function(data){
+                        var r = $.parseJSON(data);
+                        console.log("stopping task " + r.response);
+                        $(button).removeClass('working');
+                        $(button).text('Start');
+                        working = false;
+                    }
+                });
+            }
+
         });
     });
 </script>
+
+
 
 <?php
 var_dump($tasks);

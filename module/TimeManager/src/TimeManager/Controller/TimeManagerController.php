@@ -31,7 +31,7 @@ class TimeManagerController extends AbstractActionController{
         ));
     }
 
-    public function saveAction(){
+    public function startAction(){
         $request = $this->getRequest();
         $response = $this->getResponse();
 
@@ -44,6 +44,22 @@ class TimeManagerController extends AbstractActionController{
                 $response->setContent(\Zend\Json\Json::encode(array('response' => false)));
             }else{
                 $response->setContent(\Zend\Json\Json::encode(array('response' => $id)));
+            }
+        }
+        return $response;
+    }
+
+    public function stopAction(){
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        if($request->isPost()){
+            $lastTask = $this->getTaskTable()->getLastTask();
+            if(!$id = $this->getTaskTable()->endTask($lastTask)){
+                $response->setContent(\Zend\Json\Json::encode(array('response' => false)));
+            }else{
+                $response->setContent(\Zend\Json\Json::encode(array('response' => $id)));
+
             }
         }
         return $response;

@@ -2,6 +2,7 @@
 
 namespace TimeManager\Model;
 
+use TimeManager\Model\Entity\Task;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\Sql\Select;
@@ -20,7 +21,7 @@ class TaskTable extends  AbstractTableGateway{
         });
         $entities = array();
         foreach ($resultSet as $row) {
-            $entity = new Entity\Task();
+            $entity = new Task();
             $entity->setId($row->id)
                 ->setNote($row->note)
                 ->setStart($row->start)
@@ -34,7 +35,7 @@ class TaskTable extends  AbstractTableGateway{
         $row = $this->select(array('id' => (int) $id))->current();
         if(!$row) return false;
 
-        $task = new Entity\Task(
+        $task = new Task(
           array(
               'id' => $row->id,
               'start' => $row->start,
@@ -46,7 +47,7 @@ class TaskTable extends  AbstractTableGateway{
         return $task;
     }
 
-    public function saveTask(Entity\Task $task){
+    public function saveTask(Task $task){
         $data = array(
             'note' => $task->getNote(),
             'start' => $task->getStart(),
@@ -69,5 +70,41 @@ class TaskTable extends  AbstractTableGateway{
         }else{
             return false;
         }
+    }
+
+    public function endTask(Task $task){
+        $id = $task->getId();
+        if($id){
+            if(!$task->getEnd()){
+                $data['end'] = date("Y-m-d H:i:s");
+                if(!$this->update($data, array('id' => $id))){
+                    return false;
+                }else{
+                    return $id;
+            }
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    public function getLastTask(){
+        $result = $this->select(function (Select $select){
+            $select->order('id DESC');
+            $select->limit(1);
+        });
+
+        $result = $result->current();
+
+        $entity = new Task();
+
+        $entity->setId($result->id)
+                ->setNote($result->note)
+                ->setStart($result->start)
+                ->setEnd($result->end);
+
+        return $entity;
     }
 }
