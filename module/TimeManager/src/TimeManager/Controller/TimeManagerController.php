@@ -26,8 +26,17 @@ class TimeManagerController extends AbstractActionController{
     }
 
     public function indexAction(){
+        $lastTask = $this->getTaskTable()->getLastTask();
+        $running = empty($lastTask->getEnd()) ? 1 : 0;
+        $dateDiff = 0;
+        if($running){
+            $dateDiff = (strtotime(date("Y-m-d H:i:s")) - strtotime($lastTask->getStart())) * 1000;
+        }
+        var_dump($dateDiff);
         return new ViewModel(array(
-            'tasks' => $this->getTaskTable()->fetchAll()
+            'tasks' => $this->getTaskTable()->fetchAll(),
+            'running' => $running,
+            'dateDiff' => $dateDiff
         ));
     }
 

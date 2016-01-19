@@ -5,12 +5,18 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var runner = $('#runner');
-        runner.runner();
-        var working = false;
-        $('#startTask').click(function(event){
+        var working = <?php echo $running; ?>;
+        runner.runner({
+            autostart: working,
+            startAt: <?php echo $dateDiff; ?>
+        });
+
+        var button = $('#startTask');
+
+        buttonStyle(working, button);
+        button.click(function(event){
             event.preventDefault();
             var note = $("#note").val();
-            var button = this;
             if(!working){
                 $.ajax({
                     type: 'POST',
@@ -19,11 +25,10 @@
                     success: function(data){
                         var r = $.parseJSON(data);
                         console.log("starting task " + r.response);
-                        $(button).addClass('working');
-                        $(button).text('Stop');
                         working = true;
                         runner.runner('reset');
                         runner.runner('start');
+                        buttonStyle(working, button);
                     }
                 });
             }else{
@@ -33,16 +38,25 @@
                     success: function(data){
                         var r = $.parseJSON(data);
                         console.log("stopping task " + r.response);
-                        $(button).removeClass('working');
-                        $(button).text('Start');
                         working = false;
                         runner.runner('stop');
+                        buttonStyle(working, button);
                     }
                 });
             }
 
         });
     });
+
+    function buttonStyle(working, button){
+        if(!working){
+            $(button).removeClass('working');
+            $(button).text('Start');
+        }else{
+            $(button).addClass('working');
+            $(button).text('Stop');
+        }
+    }
 </script>
 
 
