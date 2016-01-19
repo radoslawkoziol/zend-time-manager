@@ -26,8 +26,12 @@
                         var r = $.parseJSON(data);
                         console.log("starting task " + r.response);
                         working = true;
+                        runner.runner({
+                            startAt: 0
+                        });
                         runner.runner('reset');
                         runner.runner('start');
+
                         buttonStyle(working, button);
                     }
                 });
