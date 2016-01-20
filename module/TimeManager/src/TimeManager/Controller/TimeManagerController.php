@@ -16,6 +16,7 @@ use Zend\View\Model\ViewModel;
 class TimeManagerController extends AbstractActionController{
 
     protected $_taskTable;
+    protected $_scheduleTable;
 
     public function getTaskTable(){
         if(!$this->_taskTable){
@@ -25,18 +26,27 @@ class TimeManagerController extends AbstractActionController{
         return $this->_taskTable;
     }
 
+    public function getScheduleTable(){
+        if(!$this->_scheduleTable){
+            $sm = $this->getServiceLocator();
+            $this->_scheduleTable = $sm->get('TimeManager\Model\ScheduleTable');
+        }
+        return $this->_scheduleTable;
+    }
+
     public function indexAction(){
         $lastTask = $this->getTaskTable()->getLastTask();
+        $schedule = $this->getScheduleTable()->fetchAllDefault();
         $running = empty($lastTask->getEnd()) ? 1 : 0;
         $dateDiff = 0;
         if($running){
             $dateDiff = (strtotime(date("Y-m-d H:i:s")) - strtotime($lastTask->getStart())) * 1000;
         }
-        var_dump($dateDiff);
         return new ViewModel(array(
             'tasks' => $this->getTaskTable()->fetchAll(),
             'running' => $running,
-            'dateDiff' => $dateDiff
+            'dateDiff' => $dateDiff,
+            'schedule' => $schedule
         ));
     }
 

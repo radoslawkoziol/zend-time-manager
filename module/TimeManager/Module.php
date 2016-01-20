@@ -6,6 +6,7 @@
 
 namespace TimeManager;
 
+use TimeManager\Model\ScheduleTable;
 use TimeManager\Model\TaskTable;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
@@ -50,6 +51,11 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $table = new TaskTable($dbAdapter);
                     return $table;
                 },
+                'TimeManager\Model\ScheduleTable' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new ScheduleTable($dbAdapter);
+                    return $table;
+                }
             ),
         );
     }
