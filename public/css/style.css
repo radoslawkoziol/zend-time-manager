@@ -15,6 +15,32 @@ body .container #runner {
   font-size: 72px;
   color: red;
 }
+body .container #schedule {
+  width: 100%;
+}
+body .container #schedule th {
+  text-align: center;
+  background: #F3F3F3;
+  border: 1px solid #bbb;
+}
+body .container #schedule th.weekend {
+  background: #636363;
+  color: #fff;
+  border: 1px solid #5F5F5F;
+}
+body .container #schedule td {
+  width: 12.5%;
+  text-align: center;
+  background: #f8f8f8;
+  border: 1px solid #DADADA;
+}
+body .container #schedule td.name {
+  font-weight: bold;
+  vertical-align: middle;
+}
+body .container #schedule td.weekend {
+  background: #E4E4E4;
+}
 .zf-green {
   color: #68b604;
 }

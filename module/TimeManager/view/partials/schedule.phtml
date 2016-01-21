@@ -1,3 +1,29 @@
 <?php
-
 var_dump($schedule);
+?>
+
+<table id="schedule">
+    <tr>
+        <th class="name"></th>
+        <?php for($i=0; $i<7; $i++): ?>
+        <th <?php echo ($i == 5 || $i == 6) ? "class='weekend'" : ""; ?>>
+            <?php echo date("l",strtotime('last monday +' . $i . ' day')); ?> <Br />
+            <small><?php echo date("d-m-Y",strtotime('last monday +' . $i . ' day')); ?></small>
+        </th>
+        <?php endfor; ?>
+    </tr>
+
+    <tr>
+        <td class="name">Working time</td>
+        <?php foreach($schedule as $day): ?>
+            <td <?php echo ($day->getDayOfWeek() == 6 || $day->getDayOfWeek() == 7) ? "class='weekend'" : ""; ?>>
+                <?php if(strtotime($day->getStart()) - strtotime($day->getEnd()) != 0): ?>
+                    <?php echo date("h:i",strtotime($day->getStart()) ); ?> - <?php echo date("H:i",strtotime($day->getEnd()) ); ?><br />
+                    <?php echo $day->getComment(); ?>
+                <?php else: ?>
+                -
+                <?php endif; ?>
+            </td>
+        <?php endforeach; ?>
+    </tr>
+</table>

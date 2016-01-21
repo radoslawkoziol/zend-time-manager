@@ -7,7 +7,8 @@ class Schedule{
     protected $_id;
     protected $_dayOfWeek;
     protected $_customDate;
-    protected $_workTime;
+    protected $_start;
+    protected $_end;
     protected $_comment;
 
     /**
@@ -67,18 +68,36 @@ class Schedule{
     /**
      * @return mixed
      */
-    public function getWorkTime()
+    public function getStart()
     {
-        return $this->_workTime;
+        return $this->_start;
     }
 
     /**
-     * @param mixed $workTime
+     * @param mixed $start
      * @return Schedule
      */
-    public function setWorkTime($workTime)
+    public function setStart($start)
     {
-        $this->_workTime = $workTime;
+        $this->_start = $start;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnd()
+    {
+        return $this->_end;
+    }
+
+    /**
+     * @param mixed $end
+     * @return Schedule
+     */
+    public function setEnd($end)
+    {
+        $this->_end = $end;
         return $this;
     }
 
@@ -99,5 +118,6 @@ class Schedule{
         $this->_comment = $comment;
         return $this;
     }
+
 
 }

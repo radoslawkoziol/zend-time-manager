@@ -26,7 +26,8 @@ class ScheduleTable extends  AbstractTableGateway{
             $entity ->setId($row->id)
                     ->setDayOfWeek($row->dayOfWeek)
                     ->setCustomDate($row->customDate)
-                    ->setWorkTime($row->workTime)
+                    ->setStart($row->start)
+                    ->setEnd($row->end)
                     ->setComment($row->comment);
             $entities[] = $entity;
         }
